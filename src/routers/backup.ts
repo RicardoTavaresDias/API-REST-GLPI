@@ -1,9 +1,10 @@
 import mysqldump from 'mysqldump';
 import { Router } from 'express';
+import { Request, Response } from 'express';
 
 export const sqlRouter = Router()
 
-sqlRouter.get("/", async  () => {
+sqlRouter.get("/", async  (request: Request, response: Response) => {
   await mysqldump({
     connection: {
         host: 'localhost',
@@ -15,7 +16,7 @@ sqlRouter.get("/", async  () => {
     dumpToFile: './dump.sql',
   })
 
-  console.log("Backup Concluido!")
+  response.status(200).json({ message: "Backup Concluido!" })
 })
 
 // Deletar e recriar o banco

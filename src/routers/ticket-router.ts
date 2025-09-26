@@ -60,3 +60,42 @@ ticketRouter.post("/", async (request: Request, response: Response) => {
   const data = await result.json()
   response.status(201).json(data)
 })
+
+
+// Adicionar solução
+ticketRouter.post("/closeCalled", async (request: Request, response: Response) => {
+  const result = await fetch(`${env.HOST}/Ticket/45/ITILSolution`, {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({
+      input: {
+        items_id:  45,
+        itemtype: "Ticket",
+        status: 1,
+        content: "Chamado resolvido após atualização do sistema."
+      }
+    })
+  })
+
+  const data = await result.json()
+  response.status(201).json(data)
+})
+
+// Aprovar solução automaticamente
+ticketRouter.post("/validationCalled", async (request: Request, response: Response) => {
+  const result = await fetch(`${env.HOST}/Ticket/45/TicketValidation`, {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({
+      input: {
+        items_id:  45,
+        users_id_validate: 2, // id do usuário que valida,
+        status: 2, // Aceito
+        comment_submission: "Solução aprovada automaticamente."
+      }
+    })
+  })
+
+  const data = await result.json()
+  response.status(201).json(data)
+})
